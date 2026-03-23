@@ -21,13 +21,48 @@
         <h1><?php the_title(); ?></h1>
         <div class="catalog-items">
             <?php the_content(); ?>
+            
             <div class="product-grid">
-                <div class="product-card">
-                    <!-- <img src="<?php echo get_template_directory_uri(); ?>/assets/images/product1.jpg" alt="Товар 1"> -->
-                    <h3>Название товара</h3>
-                    <!-- <p>Цена: 1000 руб.</p> -->
-                </div>
-                <!-- добавь ещё карточки -->
+                <?php
+                // Запрос товаров
+                $products = new WP_Query( array(
+                    'post_type'      => 'product',
+                    'posts_per_page' => -1,  // вывести все товары
+                    'post_status'    => 'publish'
+                ) );
+
+                if ( $products->have_posts() ) :
+                    while ( $products->have_posts() ) : $products->the_post();
+                        $price = get_post_meta( get_the_ID(), '_product_price', true );
+                        $stock = get_post_meta( get_the_ID(), '_product_stock', true );
+                        ?>
+                        <div class="product-card">
+                            <?php if ( has_post_thumbnail() ) : ?>
+                                <div class="product-image">
+                                    <?php the_post_thumbnail( 'medium' ); ?>
+                                </div>
+                            <?php endif; ?>
+                            <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                            <div class="product-price">
+                                <?php echo $price ? $price . ' руб.' : 'Цена не указана'; ?>
+                            </div>
+                            <div class="product-stock">
+                                <?php
+                                switch ( $stock ) {
+                                    case 'in_stock': echo 'В наличии'; break;
+                                    case 'out_of_stock': echo 'Нет в наличии'; break;
+                                    case 'preorder': echo 'Под заказ'; break;
+                                    default: echo '';
+                                }
+                                ?>
+                            </div>
+                            <button class="buy-button">Купить</button>
+                        </div>
+                    <?php endwhile;
+                    wp_reset_postdata();
+                else : ?>
+                    <p>Товаров пока нет. Добавьте товары в админке.</p>
+                <?php endif; ?>
             </div>
         </div>
     </section>
