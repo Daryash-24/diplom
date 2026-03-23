@@ -13,8 +13,16 @@
         <div class="site-title">
             <a href="<?php echo esc_url( home_url() ); ?>"><?php bloginfo( 'name' ); ?></a>
         </div>
+        
         <nav>
-            <?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
+            <?php
+            wp_nav_menu( array(
+                'theme_location' => 'primary',
+                'container'      => false,   // чтобы не оборачивал в дополнительный div
+                'menu_class'     => 'menu',  // класс для ul (можно переименовать)
+            ) );
+            ?>
         </nav>
+
     </header>
     <main>

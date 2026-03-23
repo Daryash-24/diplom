@@ -10,9 +10,8 @@ License URI:
 Text Domain: web-witrina
 */
 
-/* Общий фон и типографика */
 body {
-    background-color: #fff9e8;  /* кремовый */
+    background-color: #fff9e8;  
     color: #333;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -20,17 +19,8 @@ body {
     line-height: 1.5;
 }
 
-/* Шапка */
 header {
-    background-color: #e34234;  /* алый */
-    color: #ffffff;             /* белый текст */
+    background-color: #f13f2f; 
+    color: #ffffff;             
     padding: 1rem 2rem;
-}
-
-/* Заголовок сайта в шапке */
-.site-title a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 1.8rem;
-    font-weight: bold;
 }
