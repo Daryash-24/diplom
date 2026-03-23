@@ -1,0 +1,16 @@
+/* Общие стили для страниц */
+.page-section {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 16px;
+}
+
+.page-section h1 {
+    font-size: 32px;
+    margin-bottom: 16px;
+    color: #e34234;
+}
+
+.page-section .content {
+    line-height: 1.6;
+}
