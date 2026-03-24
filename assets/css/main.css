@@ -1,20 +1,3 @@
-/* Общие стили для страниц */
-.page-section {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 16px;
-}
-
-.page-section h1 {
-    font-size: 32px;
-    margin-bottom: 16px;
-    color: #e34234;
-}
-
-.page-section .content {
-    line-height: 1.6;
-}
-
 /* Каталог */
 .catalog-wrapper {
     max-width: 1200px;
@@ -136,4 +119,8 @@
     color: #fff;
 }
 
-
+/* На странице товара убираем боковые отступы у .page-section */
+body.single-product .page-section {
+    padding-left: 0;
+    padding-right: 0;
+}

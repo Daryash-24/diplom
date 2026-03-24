@@ -1,23 +1,41 @@
-/* Расположение фото слева, информации справа */
-.single-product-wrapper .product-main {
+/* Главный контейнер */
+.sp-product {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Контейнер фото и информации – строка на десктопе */
+.sp-main {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    flex-wrap: nowrap;   /* не переносим на десктопе */
     gap: 40px;
     align-items: flex-start;
+    width: 100%;
 }
 
-.single-product-wrapper .product-gallery {
-    flex: 1;
-    min-width: 200px;
+/* Блок с фото – 40% ширины */
+.sp-gallery {
+    flex: 0 0 40%;
+    max-width: 40%;
 }
 
-.single-product-wrapper .product-info {
-    flex: 1;
-    min-width: 200px;
+.sp-image {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
-/* Стили для кнопки и цены */
-.order-button {
+/* Блок с информацией – оставшиеся 60% минус отступ */
+.sp-info {
+    flex: 0 0 calc(60% - 40px);
+    max-width: calc(60% - 40px);
+}
+
+/* Кнопка и цена */
+.sp-order-button {
     background-color: #e34234;
     color: #fff;
     border: none;
@@ -28,25 +46,40 @@
     transition: background 0.3s;
 }
 
-.order-button:hover {
+.sp-order-button:hover {
     background-color: #c53022;
 }
 
-.product-price strong {
+.sp-price strong {
     font-size: 24px;
     color: #e34234;
 }
 
-/* Дополнительные отступы */
-.product-price {
+.sp-price {
     margin: 20px 0;
 }
-.price-note {
+
+.sp-price-note {
     font-size: 12px;
     color: #666;
     margin-top: 10px;
 }
-.product-description {
+
+.sp-description {
     margin-top: 30px;
     line-height: 1.6;
+}
+
+/* Адаптивность – на мобильных перестраиваем в колонку */
+@media (max-width: 768px) {
+    .sp-main {
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .sp-gallery,
+    .sp-info {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 }

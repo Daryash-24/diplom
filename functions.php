@@ -130,6 +130,6 @@ function save_product_meta( $post_id ) {
 }
 add_action( 'save_post_product', 'save_product_meta' );
 
-add_theme_support('post-thumbnails');
+add_theme_support('post-thumbnails', array('post', 'product'));
 
 ?>
