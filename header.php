@@ -10,10 +10,7 @@
 
 <body <?php body_class(); ?>>
     <header>
-        <div class="site-title">
-            <a href="<?php echo esc_url( home_url() ); ?>"><?php bloginfo( 'name' ); ?></a>
-        </div>
-        
+            
         <nav>
             <?php
             wp_nav_menu( array(

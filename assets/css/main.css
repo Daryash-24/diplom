@@ -118,9 +118,3 @@
     background-color: #e34234;
     color: #fff;
 }
-
-/* На странице товара убираем боковые отступы у .page-section */
-body.single-product .page-section {
-    padding-left: 0;
-    padding-right: 0;
-}
