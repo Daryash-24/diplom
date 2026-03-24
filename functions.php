@@ -11,14 +11,18 @@ function my_vitrina_assets() {
     wp_enqueue_style('single-product-css', get_template_directory_uri() . '/assets/css/single-product.css');
 
 }
-
-    
+// Подключаем скрипт для страницы товара
+    if ( is_singular('product') ) {
+        wp_enqueue_script('single-product-js', get_template_directory_uri() . '/assets/js/single-product.js', array(), '1.0', true);
+    }
 add_action('wp_enqueue_scripts', 'my_vitrina_assets');
 
 function my_vitrina_menus() {
     register_nav_menus( array('primary' => 'Главное меню') );
 }
 add_action( 'after_setup_theme', 'my_vitrina_menus' );
+
+
 
 // 1. Регистрация типа записей "Товар"
 function register_product_post_type() {
@@ -131,5 +135,37 @@ function save_product_meta( $post_id ) {
 add_action( 'save_post_product', 'save_product_meta' );
 
 add_theme_support('post-thumbnails', array('post', 'product'));
+
+// Добавляем метабокс для дополнительных опций
+function add_product_options_meta_box() {
+    add_meta_box(
+        'product_options',
+        'Дополнительные характеристики',
+        'display_product_options_meta_box',
+        'product',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'add_product_options_meta_box');
+
+function display_product_options_meta_box($post) {
+    $options = get_post_meta($post->ID, '_product_options', true);
+    ?>
+    <p>Введите опции в формате: <strong>Название: значение1, значение2, значение3</strong><br>
+    Каждую опцию с новой строки.</p>
+    <textarea name="product_options" rows="5" style="width:100%;"><?php echo esc_textarea($options); ?></textarea>
+    <?php
+}
+
+// Сохраняем поле
+function save_product_options_meta($post_id) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+    if (isset($_POST['product_options'])) {
+        update_post_meta($post_id, '_product_options', sanitize_textarea_field($_POST['product_options']));
+    }
+}
+add_action('save_post_product', 'save_product_options_meta');
 
 ?>

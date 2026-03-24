@@ -11,23 +11,37 @@
             <div class="sp-info">
                 <h1><?php the_title(); ?></h1>
 
-                <div class="sp-category">
-                    <span>Категория</span>
-                    <div>
-                        <label><input type="radio" name="size" value="взрослый"> взрослый</label>
-                        <label><input type="radio" name="size" value="детский"> детский</label>
-                    </div>
-                </div>
+                <?php
+                // Динамические опции (размер, цвет и т.д.)
+                $options_text = get_post_meta(get_the_ID(), '_product_options', true);
+                $options = array();
+                if (!empty($options_text)) {
+                    $lines = explode("\n", $options_text);
+                    foreach ($lines as $line) {
+                        $line = trim($line);
+                        if (strpos($line, ':') !== false) {
+                            list($label, $values) = explode(':', $line, 2);
+                            $label = trim($label);
+                            $values = array_map('trim', explode(',', $values));
+                            $options[] = array('label' => $label, 'values' => $values);
+                        }
+                    }
+                }
+                ?>
 
-                <div class="sp-color">
-                    <span>Выберите цвет:</span>
+                <?php foreach ($options as $option) : ?>
+                <div class="sp-option">
+                    <span><?php echo esc_html($option['label']); ?></span>
                     <div>
-                        <label><input type="radio" name="color" value="белый"> белый</label>
-                        <label><input type="radio" name="color" value="черный"> черный</label>
-                        <label><input type="radio" name="color" value="серый"> серый</label>
-                        <label><input type="radio" name="color" value="розовый"> розовый</label>
+                        <?php foreach ($option['values'] as $value) : ?>
+                            <label>
+                                <input type="radio" name="option_<?php echo sanitize_title($option['label']); ?>" value="<?php echo esc_attr($value); ?>">
+                                <?php echo esc_html($value); ?>
+                            </label>
+                        <?php endforeach; ?>
                     </div>
                 </div>
+                <?php endforeach; ?>
 
                 <div class="sp-price">
                     Розничная цена за единицу:<br>
@@ -36,12 +50,25 @@
 
                 <button class="sp-order-button">В корзину</button>
                 <div class="sp-price-note">Цены представлены для ознакомления, точную стоимость уточняйте у менеджера.</div>
+            </div>
+        </div>
 
-                <div class="sp-description">
+        <!-- Вкладки -->
+        <div class="product-tabs">
+            <div class="tabs-nav">
+                <button class="tab-link active" data-tab="description">Описание</button>
+                <button class="tab-link" data-tab="reviews">Отзывы</button>
+            </div>
+            <div class="tabs-content">
+                <div class="tab-pane active" id="tab-description">
                     <?php the_content(); ?>
+                </div>
+                <div class="tab-pane" id="tab-reviews">
+                    <p>Здесь скоро появятся отзывы покупателей. Оставьте свой отзыв первым!</p>
                 </div>
             </div>
         </div>
+
     <?php endwhile; ?>
 </div>
 
