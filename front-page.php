@@ -1,7 +1,6 @@
 <?php get_header(); ?>
 
 <div class="front-page">
-    <!-- Герой-блок -->
     <section class="hero">
         <div class="hero-content">
             <h1>WHIEDA — здоровье и процветание через традиционную китайскую медицину</h1>
