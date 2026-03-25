@@ -23,7 +23,6 @@ function my_vitrina_menus() {
 add_action( 'after_setup_theme', 'my_vitrina_menus' );
 
 
-
 // 1. Регистрация типа записей "Товар"
 function register_product_post_type() {
     $labels = array(
@@ -167,5 +166,20 @@ function save_product_options_meta($post_id) {
     }
 }
 add_action('save_post_product', 'save_product_options_meta');
+
+// Отключаем канонический редирект для страницы каталога (по ID)
+add_filter( 'redirect_canonical', function( $redirect, $requested_url ) {
+    if ( is_page( 'catalog' ) ) { 
+        return false;
+    }
+    return $redirect;
+}, 10, 2 );
+
+function force_product_search( $query ) {
+    if ( ! is_admin() && $query->is_main_query() && is_page( 'catalog' ) && isset( $_GET['s'] ) ) {
+        $query->set( 'post_type', 'product' );
+    }
+}
+add_action( 'pre_get_posts', 'force_product_search' );
 
 ?>
