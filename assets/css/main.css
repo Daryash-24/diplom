@@ -159,3 +159,200 @@
         width: 100%;
     }
 }
+
+/* ===== Главная страница ===== */
+.front-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 0 20px;
+}
+
+/* Герой */
+.hero {
+    background-color: #e34234;
+    color: #fff;
+    text-align: center;
+    padding: 60px 20px;
+    margin-bottom: 40px;
+    border-radius: 12px;
+}
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+.hero p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+.btn-primary {
+    background-color: #fff;
+    color: #e34234;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.btn-primary:hover {
+    background-color: #ffe0b3;
+}
+
+/* Категории */
+.categories {
+    margin-bottom: 60px;
+}
+.categories h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 40px;
+}
+.categories-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;   /* центрируем карточки */
+    gap: 20px;
+    margin: 0 auto;
+    max-width: 100%;
+}
+.category-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    text-align: center;
+    padding: 20px;
+    width: 180px;               /* фиксированная ширина */
+    flex-shrink: 0;            /* не сжимается */
+    transition: 0.3s;
+}
+
+.category-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.category-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+.category-card h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+}
+.category-link {
+    color: #e34234;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: auto;
+}
+.category-link:hover {
+    text-decoration: underline;
+}
+
+/* Адаптивность для планшетов и мобильных */
+@media (max-width: 768px) {
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 500px;
+    }
+}
+@media (max-width: 480px) {
+    .categories-grid {
+        grid-template-columns: 1fr;
+        max-width: 300px;
+    }
+}
+
+/* Преимущества */
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+.advantage-item {
+    text-align: center;
+}
+.advantage-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+.advantage-item h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.advantage-item p {
+    color: #666;
+}
+
+/* Социальный блок */
+.social {
+    background-color: #fff9e8;
+    text-align: center;
+    padding: 40px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+}
+.btn-secondary {
+    background-color: #e34234;
+    color: #fff;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 20px;
+}
+.btn-secondary:hover {
+    background-color: #c53022;
+}
+
+/* ===== Страница «О нас» ===== */
+.about-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.about-page section {
+    margin-bottom: 60px;
+}
+.about-mission h1 {
+    font-size: 36px;
+    color: #e34234;
+    text-align: center;
+}
+.about-mission .mission-text {
+    font-size: 20px;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.about-history h2,
+.about-partners h2,
+.about-team h2,
+.about-contacts h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+.partners-grid,
+.team-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.partner,
+.team-member {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    flex: 1 1 200px;
+    text-align: center;
+}
+.member-photo {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+.about-contacts p {
+    font-size: 18px;
+    margin: 5px 0;
+}
