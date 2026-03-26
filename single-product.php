@@ -12,7 +12,7 @@
                 <h1><?php the_title(); ?></h1>
 
                 <?php
-                // Динамические опции (размер, цвет и т.д.)
+                // Динамические опции из мета-поля _product_options
                 $options_text = get_post_meta(get_the_ID(), '_product_options', true);
                 $options = array();
                 if (!empty($options_text)) {
@@ -108,6 +108,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
+});
+
+// Вкладки
+document.querySelectorAll('.tab-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        const tabId = this.dataset.tab;
+        document.querySelectorAll('.tab-link').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+    });
 });
 </script>
 

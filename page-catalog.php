@@ -1,6 +1,4 @@
-<?php 
-/* Template Name: Каталог */ ?>
-
+<?php /* Template Name: Каталог */ ?>
 <?php get_header(); ?>
 
 <div class="catalog-page">
@@ -45,9 +43,6 @@
                     'posts_per_page' => 6,
                     'paged'          => $paged,
                 );
-                if ( isset( $_GET['s'] ) && ! empty( $_GET['s'] ) ) {
-                    $args['s'] = sanitize_text_field( $_GET['s'] );
-                }
                 if ( isset( $_GET['cat'] ) && ! empty( $_GET['cat'] ) ) {
                     $args['tax_query'] = array(
                         array(
@@ -57,14 +52,13 @@
                         ),
                     );
                 }
-
                 $products_query = new WP_Query( $args );
                 if ( $products_query->have_posts() ) :
                     while ( $products_query->have_posts() ) : $products_query->the_post();
                         $price = get_post_meta( get_the_ID(), '_product_price', true );
-                        $stock = get_post_meta( get_the_ID(), '_product_stock', true );
+                        $thumb_url = get_the_post_thumbnail_url( get_the_ID(), 'thumbnail' );
                         ?>
-                        <div class="product-card">
+                        <div class="product-card" data-title="<?php echo esc_attr(get_the_title()); ?>">
                             <?php if ( has_post_thumbnail() ) : ?>
                                 <div class="product-image">
                                     <?php the_post_thumbnail( 'medium' ); ?>
@@ -72,16 +66,7 @@
                             <?php endif; ?>
                             <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
                             <div class="product-price"><?php echo $price ? $price . ' руб.' : 'Цена не указана'; ?></div>
-                            <div class="product-stock"><?php
-                                switch ( $stock ) {
-                                    case 'in_stock': echo 'В наличии'; break;
-                                    case 'out_of_stock': echo 'Нет в наличии'; break;
-                                    case 'preorder': echo 'Под заказ'; break;
-                                    default: echo '';
-                                }
-                            ?></div>
-                            <button class="buy-button" data-id="<?php the_ID(); ?>" data-title="<?php echo esc_attr(get_the_title()); ?>
-                                " data-price="<?php echo esc_attr($price); ?>">Купить</button>
+                            <button class="buy-button" data-id="<?php the_ID(); ?>" data-title="<?php echo esc_attr(get_the_title()); ?>" data-price="<?php echo esc_attr($price); ?>" data-thumb="<?php echo esc_attr($thumb_url); ?>">Купить</button>
                         </div>
                     <?php endwhile; ?>
                     <div class="pagination">
@@ -101,38 +86,13 @@
     </div>
 </div>
 
-<!-- добавление в корзину -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof cart !== 'undefined') {
-        document.querySelectorAll('.buy-button').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                const id = this.dataset.id;
-                const title = this.dataset.title;
-                const price = parseFloat(this.dataset.price);
-                cart.add({
-                    id: id,
-                    title: title,
-                    price: price,
-                    size: '',
-                    color: ''
-                });
-                alert('Товар добавлен в корзину');
-            });
-        });
-    } else {
-        console.error('cart не загружен');
-    }
-});
-</script>
-
-<!-- поиск товара -->
-<script>
+// Клиентский поиск по названию (без перезагрузки)
 document.getElementById('catalog-search-button').addEventListener('click', function() {
     var searchTerm = document.getElementById('catalog-search-input').value.toLowerCase();
     var cards = document.querySelectorAll('.product-card');
     cards.forEach(function(card) {
-        var title = card.querySelector('h3 a').innerText.toLowerCase();
+        var title = card.getAttribute('data-title').toLowerCase();
         if (title.indexOf(searchTerm) !== -1) {
             card.style.display = '';
         } else {
@@ -140,6 +100,27 @@ document.getElementById('catalog-search-button').addEventListener('click', funct
         }
     });
 });
+
+// Добавление в корзину из каталога
+if (typeof cart !== 'undefined') {
+    document.querySelectorAll('.buy-button').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const id = this.dataset.id;
+            const title = this.dataset.title;
+            const price = parseFloat(this.dataset.price);
+            const thumb = this.dataset.thumb;
+            cart.add({
+                id: id,
+                title: title,
+                price: price,
+                thumb: thumb,
+                options: {},
+                optionsString: ''
+            });
+            alert('Товар добавлен в корзину');
+        });
+    });
+}
 </script>
 
 <?php get_footer(); ?>
