@@ -21,5 +21,9 @@
             ?>
         </nav>
 
+        <a href="/cart/" class="cart-link">
+            🛒 <span class="cart-counter" style="display:none;">0</span>
+        </a>
+
     </header>
     <main>

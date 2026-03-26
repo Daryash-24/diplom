@@ -24,3 +24,21 @@
 .menu a:hover {
     color: #ffd966;
 }
+
+.cart-link {
+    display: inline-block;
+    margin-left: 20px;
+    text-decoration: none;
+    color: #fff;
+    position: relative;
+}
+.cart-counter {
+    background: #fff;
+    color: #e34234;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+}

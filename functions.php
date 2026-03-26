@@ -9,6 +9,7 @@ function my_vitrina_assets() {
     wp_enqueue_style('header-css', get_template_directory_uri() . '/assets/css/header.css');
     wp_enqueue_style('footer-css', get_template_directory_uri() . '/assets/css/footer.css');
     wp_enqueue_style('single-product-css', get_template_directory_uri() . '/assets/css/single-product.css');
+    wp_enqueue_script('cart-js', get_template_directory_uri() . '/assets/js/cart.js', array(), '1.0', true);
 
 }
 // Подключаем скрипт для страницы товара

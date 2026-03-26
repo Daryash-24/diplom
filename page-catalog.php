@@ -80,7 +80,8 @@
                                     default: echo '';
                                 }
                             ?></div>
-                            <button class="buy-button">Купить</button>
+                            <button class="buy-button" data-id="<?php the_ID(); ?>" data-title="<?php echo esc_attr(get_the_title()); ?>
+                                " data-price="<?php echo esc_attr($price); ?>">Купить</button>
                         </div>
                     <?php endwhile; ?>
                     <div class="pagination">
@@ -100,8 +101,32 @@
     </div>
 </div>
 
-<?php get_footer(); ?>
+<!-- добавление в корзину -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof cart !== 'undefined') {
+        document.querySelectorAll('.buy-button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const id = this.dataset.id;
+                const title = this.dataset.title;
+                const price = parseFloat(this.dataset.price);
+                cart.add({
+                    id: id,
+                    title: title,
+                    price: price,
+                    size: '',
+                    color: ''
+                });
+                alert('Товар добавлен в корзину');
+            });
+        });
+    } else {
+        console.error('cart не загружен');
+    }
+});
+</script>
 
+<!-- поиск товара -->
 <script>
 document.getElementById('catalog-search-button').addEventListener('click', function() {
     var searchTerm = document.getElementById('catalog-search-input').value.toLowerCase();
@@ -116,3 +141,5 @@ document.getElementById('catalog-search-button').addEventListener('click', funct
     });
 });
 </script>
+
+<?php get_footer(); ?>

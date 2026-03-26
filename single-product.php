@@ -48,7 +48,7 @@
                     <strong><?php echo get_post_meta(get_the_ID(), '_product_price', true) ?: 'Цена не указана'; ?> руб.</strong>
                 </div>
 
-                <button class="sp-order-button">В корзину</button>
+                <button id="add-to-cart" class="order-button">В корзину</button>
                 <div class="sp-price-note">Цены представлены для ознакомления, точную стоимость уточняйте у менеджера.</div>
             </div>
         </div>
@@ -71,5 +71,29 @@
 
     <?php endwhile; ?>
 </div>
+
+<script>
+document.getElementById('add-to-cart').addEventListener('click', function() {
+    // Получаем выбранную категорию (взрослый/детский)
+    const selectedSize = document.querySelector('input[name="size"]:checked');
+    const size = selectedSize ? selectedSize.value : '';
+    // Получаем выбранный цвет
+    const selectedColor = document.querySelector('input[name="color"]:checked');
+    const color = selectedColor ? selectedColor.value : '';
+
+    const productId = <?php echo get_the_ID(); ?>;
+    const productTitle = <?php echo json_encode(get_the_title()); ?>;
+    const productPrice = parseFloat(<?php echo get_post_meta(get_the_ID(), '_product_price', true) ?: 0; ?>);
+
+    cart.add({
+        id: productId,
+        title: productTitle,
+        price: productPrice,
+        size: size,
+        color: color
+    });
+    alert('Товар добавлен в корзину');
+});
+</script>
 
 <?php get_footer(); ?>
