@@ -23,6 +23,7 @@
     max-width: 40%;
 }
 
+/* Само фото*/
 .sp-image {
     width: 100%;
     height: auto;
@@ -35,7 +36,7 @@
     max-width: calc(60% - 40px);
 }
 
-/* Кнопка и цена */
+/* Кнопка "В корзину" */
 .sp-order-button {
     background-color: #e34234;
     color: #fff;
@@ -47,10 +48,12 @@
     transition: background 0.3s;
 }
 
+/* кнопка в корзину при наведении*/
 .sp-order-button:hover {
     background-color: #c53022;
 }
 
+/* цена товара*/
 .sp-price strong {
     font-size: 24px;
     color: #e34234;
@@ -60,12 +63,14 @@
     margin: 20px 0;
 }
 
+/* примечание под ценой*/
 .sp-price-note {
     font-size: 12px;
     color: #666;
     margin-top: 10px;
 }
 
+/* описание товара*/
 .sp-description {
     margin-top: 30px;
     line-height: 1.6;
@@ -85,6 +90,7 @@
     }
 }
 
+/* общй стиль для выбора параметров (цвет, размер и тд)*/
 .sp-option {
     margin-bottom: 20px;
 }

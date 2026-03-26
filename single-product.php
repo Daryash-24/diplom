@@ -48,7 +48,7 @@
                     <strong><?php echo get_post_meta(get_the_ID(), '_product_price', true) ?: 'Цена не указана'; ?> руб.</strong>
                 </div>
 
-                <button id="add-to-cart" class="order-button">В корзину</button>
+                <button id="add-to-cart" class="sp-order-button">В корзину</button>
                 <div class="sp-price-note">Цены представлены для ознакомления, точную стоимость уточняйте у менеджера.</div>
             </div>
         </div>
@@ -73,26 +73,41 @@
 </div>
 
 <script>
-document.getElementById('add-to-cart').addEventListener('click', function() {
-    // Получаем выбранную категорию (взрослый/детский)
-    const selectedSize = document.querySelector('input[name="size"]:checked');
-    const size = selectedSize ? selectedSize.value : '';
-    // Получаем выбранный цвет
-    const selectedColor = document.querySelector('input[name="color"]:checked');
-    const color = selectedColor ? selectedColor.value : '';
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof cart !== 'undefined') {
+        const addButton = document.getElementById('add-to-cart');
+        if (addButton) {
+            addButton.addEventListener('click', function() {
+                const productId = <?php echo get_the_ID(); ?>;
+                const productTitle = <?php echo json_encode(get_the_title()); ?>;
+                const productPrice = parseFloat(<?php echo get_post_meta(get_the_ID(), '_product_price', true) ?: 0; ?>);
+                const productThumb = <?php echo json_encode(get_the_post_thumbnail_url(get_the_ID(), 'thumbnail')); ?>;
 
-    const productId = <?php echo get_the_ID(); ?>;
-    const productTitle = <?php echo json_encode(get_the_title()); ?>;
-    const productPrice = parseFloat(<?php echo get_post_meta(get_the_ID(), '_product_price', true) ?: 0; ?>);
+                // Собираем все выбранные опции
+                const options = {};
+                document.querySelectorAll('.sp-option').forEach(optionDiv => {
+                    const label = optionDiv.querySelector('span').innerText.trim();
+                    const selectedRadio = optionDiv.querySelector('input[type="radio"]:checked');
+                    if (selectedRadio) {
+                        options[label] = selectedRadio.value;
+                    }
+                });
 
-    cart.add({
-        id: productId,
-        title: productTitle,
-        price: productPrice,
-        size: size,
-        color: color
-    });
-    alert('Товар добавлен в корзину');
+                // Формируем строку для отображения
+                const optionsString = Object.entries(options).map(([k, v]) => `${k}: ${v}`).join(', ');
+
+                cart.add({
+                    id: productId,
+                    title: productTitle,
+                    price: productPrice,
+                    options: options,
+                    optionsString: optionsString,
+                    thumb: productThumb
+                });
+                alert('Товар добавлен в корзину');
+            });
+        }
+    }
 });
 </script>
 

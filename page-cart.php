@@ -19,66 +19,84 @@
 </div>
 
 <script>
-function renderCart() {
-    const items = cart.getItems();
-    const container = document.getElementById('cart-items');
-    if (items.length === 0) {
-        container.innerHTML = '<p>Корзина пуста.</p>';
-        document.getElementById('cart-total').innerHTML = '';
-        return;
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof cart !== 'undefined') {
+        function renderCart() {
+            const items = cart.getItems();
+            const container = document.getElementById('cart-items');
+            if (items.length === 0) {
+                container.innerHTML = '<p>Корзина пуста.</p>';
+                document.getElementById('cart-total').innerHTML = '';
+                return;
+            }
+            let html = '<ul class="cart-list">';
+            items.forEach((item, index) => {
+                // Отображаем параметры (если есть optionsString)
+                let paramsHtml = '';
+                if (item.optionsString) {
+                    paramsHtml = `<br>Параметры: ${item.optionsString}`;
+                } else {
+                    // Для обратной совместимости, если товар добавлен со старыми полями
+                    paramsHtml = `<br>Размер: ${item.size || 'не выбран'}<br>Цвет: ${item.color || 'не выбран'}`;
+                }
+
+                html += `
+                    <li class="cart-item">
+                        <div class="item-image">
+                            ${item.thumb ? `<img src="${item.thumb}" alt="${item.title}" style="width: 50px; height: auto;">` : ''}
+                        </div>
+                        <div class="item-info">
+                            <strong>${item.title}</strong><br>
+                            Цена: ${item.price} руб.<br>
+                            ${paramsHtml}
+                            Количество: 
+                            <button class="qty-minus" data-index="${index}">-</button>
+                            ${item.quantity}
+                            <button class="qty-plus" data-index="${index}">+</button>
+                        </div>
+                        <button class="remove-item" data-index="${index}">Удалить</button>
+                    </li>
+                `;
+            });
+            html += '</ul>';
+            container.innerHTML = html;
+            const total = cart.getTotal();
+            document.getElementById('cart-total').innerHTML = `<p>Итого: ${total} руб.</p>`;
+
+            // обработчики кнопок
+            document.querySelectorAll('.qty-minus').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(btn.dataset.index);
+                    cart.updateQuantity(idx, -1);
+                    renderCart();
+                });
+            });
+            document.querySelectorAll('.qty-plus').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(btn.dataset.index);
+                    cart.updateQuantity(idx, 1);
+                    renderCart();
+                });
+            });
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(btn.dataset.index);
+                    cart.remove(idx);
+                    renderCart();
+                });
+            });
+        }
+
+        renderCart();
+
+        document.getElementById('checkout-button').addEventListener('click', function() {
+            document.getElementById('contacts-info').style.display = 'block';
+        });
+    } else {
+        console.error('cart.js не загружен');
+        document.getElementById('cart-items').innerHTML = '<p>Ошибка: корзина не загружена. Обновите страницу.</p>';
     }
-    let html = '<ul class="cart-list">';
-    items.forEach((item, index) => {
-        html += `
-            <li class="cart-item">
-                <div class="item-info">
-                    <strong>${item.title}</strong><br>
-                    Цена: ${item.price} руб.<br>
-                    Размер: ${item.size || 'не выбран'}<br>
-                    Цвет: ${item.color || 'не выбран'}<br>
-                    Количество: 
-                    <button class="qty-minus" data-index="${index}">-</button>
-                    ${item.quantity}
-                    <button class="qty-plus" data-index="${index}">+</button>
-                </div>
-                <button class="remove-item" data-index="${index}">Удалить</button>
-            </li>
-        `;
-    });
-    html += '</ul>';
-    container.innerHTML = html;
-    const total = cart.getTotal();
-    document.getElementById('cart-total').innerHTML = `<p>Итого: ${total} руб.</p>`;
-
-    // обработчики кнопок
-    document.querySelectorAll('.qty-minus').forEach(btn => {
-        btn.addEventListener('click', e => {
-            const idx = parseInt(btn.dataset.index);
-            cart.updateQuantity(idx, -1);
-            renderCart();
-        });
-    });
-    document.querySelectorAll('.qty-plus').forEach(btn => {
-        btn.addEventListener('click', e => {
-            const idx = parseInt(btn.dataset.index);
-            cart.updateQuantity(idx, 1);
-            renderCart();
-        });
-    });
-    document.querySelectorAll('.remove-item').forEach(btn => {
-        btn.addEventListener('click', e => {
-            const idx = parseInt(btn.dataset.index);
-            cart.remove(idx);
-            renderCart();
-        });
-    });
-}
-
-document.getElementById('checkout-button').addEventListener('click', function() {
-    document.getElementById('contacts-info').style.display = 'block';
 });
-
-renderCart();
 </script>
 
 <?php get_footer(); ?>
