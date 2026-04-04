@@ -170,7 +170,7 @@
 
 /* Герой */
 .hero {
-    background-color: #e34234;
+    background-color: #a2c56bda;
     color: #fff;
     text-align: center;
     padding: 60px 20px;
@@ -187,7 +187,7 @@
 }
 .btn-primary {
     background-color: #fff;
-    color: #e34234;
+    color: #658a34;
     padding: 12px 30px;
     text-decoration: none;
     border-radius: 4px;
@@ -195,7 +195,8 @@
     transition: 0.3s;
 }
 .btn-primary:hover {
-    background-color: #ffe0b3;
+    background-color: #658a34;
+    color: #fff;
 }
 
 /* Категории */
@@ -228,6 +229,7 @@
 
 .category-card:hover {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background-color: #fcffb3;
 }
 .category-icon {
     font-size: 48px;
@@ -238,13 +240,10 @@
     font-size: 18px;
 }
 .category-link {
-    color: #e34234;
+    color: #e3348e;
     text-decoration: none;
     font-weight: bold;
     margin-top: auto;
-}
-.category-link:hover {
-    text-decoration: underline;
 }
 
 /* Адаптивность для планшетов и мобильных */
@@ -292,7 +291,7 @@
     margin-bottom: 40px;
 }
 .btn-secondary {
-    background-color: #e34234;
+    background-color: #658a34;
     color: #fff;
     padding: 12px 30px;
     text-decoration: none;
@@ -302,7 +301,7 @@
     margin-top: 20px;
 }
 .btn-secondary:hover {
-    background-color: #c53022;
+    background-color: #e3348e;
 }
 
 /* ===== Страница «О нас» ===== */

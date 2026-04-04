@@ -38,7 +38,7 @@ main {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
-    color: #e34234;
+    color: #658a34;
 }
 
 .footer-contacts p {
@@ -52,7 +52,7 @@ main {
 }
 
 .footer-contacts a:hover {
-    color: #e34234;
+    color: #658a34;
 }
 
 .footer-social {
@@ -72,7 +72,7 @@ main {
 }
 
 .social-link:hover {
-    background-color: #e34234;
+    background-color: #658a34;
     transform: translateY(-2px);
 }
 

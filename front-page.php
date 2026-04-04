@@ -9,7 +9,7 @@
         </div>
     </section>
 
-    <!-- 6 категорий товаров (карточки) -->
+    
     <section class="categories">
         <h2>Наши продукты</h2>
         <div class="categories-grid">
