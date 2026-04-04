@@ -2,7 +2,6 @@
 <?php get_header(); ?>
 
 <div class="catalog-page">
-    <h1><?php the_title(); ?></h1>
 
     <div class="catalog-search-wrapper">
         <form class="catalog-search" onsubmit="return false;">

@@ -38,7 +38,7 @@
 
 /* Кнопка "В корзину" */
 .sp-order-button {
-    background-color: #e34234;
+    background-color: #e3348e;
     color: #fff;
     border: none;
     padding: 12px 30px;
@@ -50,13 +50,13 @@
 
 /* кнопка в корзину при наведении*/
 .sp-order-button:hover {
-    background-color: #c53022;
+    background-color: #bc2c77;
 }
 
 /* цена товара*/
 .sp-price strong {
     font-size: 24px;
-    color: #e34234;
+    color: #e3348e;
 }
 
 .sp-price {
@@ -128,12 +128,12 @@
 }
 
 .tab-link:hover {
-    color: #e34234;
+    color: #658a34;
 }
 
 .tab-link.active {
-    color: #e34234;
-    border-bottom: 2px solid #e34234;
+    color: #658a34;
+    border-bottom: 2px solid #496426;
     margin-bottom: -1px;
 }
 

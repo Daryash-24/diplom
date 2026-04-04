@@ -8,7 +8,7 @@
 .catalog-page h1 {
     font-size: 32px;
     margin-bottom: 20px;
-    color: #e34234;
+    color: #658a34;
 }
 
 /* Поисковая форма */
@@ -21,14 +21,14 @@
     gap: 10px;
 }
 .catalog-search input[type="text"] {
-    width: 300px;
+    width: 500px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 .catalog-search button {
     padding: 10px 20px;
-    background-color: #e34234;
+    background-color: #658a34;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -36,7 +36,8 @@
     transition: background 0.3s;
 }
 .catalog-search button:hover {
-    background-color: #c53022;
+    background-color: #ffff;
+    color: #e3348e;
 }
 
 /* Две колонки */
@@ -72,7 +73,7 @@
 }
 .category-list-vertical li a:hover,
 .category-list-vertical li.active a {
-    color: #e34234;
+    color: #e3348e;
     font-weight: bold;
 }
 
@@ -102,11 +103,11 @@
 }
 .product-price {
     font-weight: bold;
-    color: #e34234;
+    color: #e3348e;
     margin: 10px 0;
 }
 .buy-button {
-    background-color: #e34234;
+    background-color: #658a34;
     color: #fff;
     border: none;
     padding: 8px 16px;
@@ -116,7 +117,8 @@
     transition: background 0.3s;
 }
 .buy-button:hover {
-    background-color: #c53022;
+    background-color: #ffff;
+    color: #e3348e;
 }
 .product-stock {
     font-size: 12px;
@@ -132,13 +134,13 @@
     display: inline-block;
     padding: 8px 12px;
     margin: 0 4px;
-    border: 1px solid #e34234;
+    border: 1px solid #658a34;
     border-radius: 4px;
     text-decoration: none;
-    color: #e34234;
+    color: #e3348e;
 }
 .pagination .current {
-    background-color: #e34234;
+    background-color: #658a34;
     color: #fff;
 }
 
@@ -315,7 +317,7 @@
 }
 .about-mission h1 {
     font-size: 36px;
-    color: #e34234;
+    color: #658a34;
     text-align: center;
 }
 .about-mission .mission-text {
@@ -387,7 +389,7 @@
 }
 .cart-item-price {
     font-weight: bold;
-    color: #e34234;
+    color: #e3348e;
     margin: 5px 0;
 }
 .cart-item-params {
@@ -407,7 +409,7 @@
     justify-content: flex-end;
 }
 .cart-item-quantity button {
-    background-color: #e34234;
+    background-color: #e3348e;
     color: #fff;
     border: none;
     width: 30px;
@@ -422,7 +424,7 @@
     text-align: center;
 }
 .remove-item {
-    background-color: #e34234;
+    background-color: #e3348e;
     color: #fff;
     border: none;
     padding: 5px 10px;
@@ -430,7 +432,7 @@
     cursor: pointer;
 }
 .remove-item:hover {
-    background-color: #c53022;
+    background-color: #496426;
 }
 @media (max-width: 768px) {
     .cart-item {
@@ -468,7 +470,7 @@
     width: 30px;
 }
 .checkout-btn {
-    background: #e34234;
+    background: #658a34;
     color: #fff;
     padding: 12px 20px;
     text-align: center;
