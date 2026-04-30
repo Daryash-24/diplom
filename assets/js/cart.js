@@ -62,17 +62,15 @@ class Cart {
     }
 
     getItems() {
-        return this.items;
+        return [...this.items]; // возвращаем копию
     }
 
-    // Важно: улучшенный метод очистки
     clear() {
         this.items = [];
-        localStorage.removeItem('whieda_cart');   // принудительно удаляем из localStorage
+        localStorage.removeItem('whieda_cart');
         this.updateCounter();
-        console.log('Корзина очищена через cart.clear()');
+        console.log('Корзина очищена');
     }
 }
 
-// Создание объекта корзины
 const cart = new Cart();

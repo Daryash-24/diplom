@@ -74,40 +74,68 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    if (typeof cart !== 'undefined') {
-        const addButton = document.getElementById('add-to-cart');
-        if (addButton) {
-            addButton.addEventListener('click', function() {
-                const productId = <?php echo get_the_ID(); ?>;
-                const productTitle = <?php echo json_encode(get_the_title()); ?>;
-                const productPrice = parseFloat(<?php echo get_post_meta(get_the_ID(), '_product_price', true) ?: 0; ?>);
-                const productThumb = <?php echo json_encode(get_the_post_thumbnail_url(get_the_ID(), 'thumbnail')); ?>;
-
-                // Собираем все выбранные опции
-                const options = {};
-                document.querySelectorAll('.sp-option').forEach(optionDiv => {
-                    const label = optionDiv.querySelector('span').innerText.trim();
-                    const selectedRadio = optionDiv.querySelector('input[type="radio"]:checked');
-                    if (selectedRadio) {
-                        options[label] = selectedRadio.value;
-                    }
-                });
-
-                // Формируем строку для отображения
-                const optionsString = Object.entries(options).map(([k, v]) => `${k}: ${v}`).join(', ');
-
-                cart.add({
-                    id: productId,
-                    title: productTitle,
-                    price: productPrice,
-                    options: options,
-                    optionsString: optionsString,
-                    thumb: productThumb
-                });
-                alert('Товар добавлен в корзину');
-            });
-        }
+    if (typeof cart === 'undefined') {
+        console.error('cart.js не загружен');
+        return;
     }
+
+    const addButton = document.getElementById('add-to-cart');
+    if (!addButton) return;
+
+    // Проверка, выбраны ли все опции
+    function areAllOptionsSelected() {
+        const optionGroups = document.querySelectorAll('.sp-option');
+        if (optionGroups.length === 0) return true; // опций нет — можно добавлять
+
+        for (let group of optionGroups) {
+            const selected = group.querySelector('input[type="radio"]:checked');
+            if (!selected) return false;
+        }
+        return true;
+    }
+
+    // Добавление в корзину
+    addButton.addEventListener('click', function() {
+        // Если есть опции и они не выбраны — показываем предупреждение
+        if (!areAllOptionsSelected()) {
+            alert('Пожалуйста, выберите все необходимые опции товара (размер, цвет и т.д.)');
+            return;
+        }
+
+        const productId = <?php echo get_the_ID(); ?>;
+        const productTitle = <?php echo json_encode(get_the_title()); ?>;
+        const productPrice = parseFloat(<?php echo get_post_meta(get_the_ID(), '_product_price', true) ?: 0; ?>);
+        const productThumb = <?php echo json_encode(get_the_post_thumbnail_url(get_the_ID(), 'medium')); ?> || 
+                    <?php echo json_encode(get_the_post_thumbnail_url(get_the_ID(), 'thumbnail')); ?> || '';
+
+        // Собираем выбранные опции
+        const options = {};
+        let optionsString = '';
+
+        document.querySelectorAll('.sp-option').forEach(optionDiv => {
+            const label = optionDiv.querySelector('span').innerText.trim();
+            const selectedRadio = optionDiv.querySelector('input[type="radio"]:checked');
+            if (selectedRadio) {
+                options[label] = selectedRadio.value;
+            }
+        });
+
+        if (Object.keys(options).length > 0) {
+            optionsString = Object.entries(options).map(([k, v]) => `${k}: ${v}`).join(', ');
+        }
+
+        cart.add({
+            id: productId,
+            title: productTitle,
+            price: productPrice,
+            options: options,
+            optionsString: optionsString,
+            thumb: productThumb
+        });
+
+        alert('Товар добавлен в корзину!');
+    });
+
 });
 
 // Вкладки

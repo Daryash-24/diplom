@@ -56,77 +56,79 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderCart() {
-    const items = cart.getItems();
-    const container = document.getElementById('cart-items');
-    
-    if (!items || items.length === 0) {
-        container.innerHTML = '<p>Корзина пуста.</p>';
-        document.getElementById('cart-total').innerHTML = '';
-        document.getElementById('checkout-form').style.display = 'none';
-        return;
-    }
-
-    let html = '<ul class="cart-list">';
-    
-    items.forEach(function(item, index) {
-        let paramsHtml = '';
-        if (item.optionsString) {
-            paramsHtml = '<br><small>Параметры: ' + item.optionsString + '</small>';
-        } else if (item.size || item.color) {
-            paramsHtml = '<br><small>Размер: ' + (item.size || '—') + ' | Цвет: ' + (item.color || '—') + '</small>';
+        const items = cart.getItems();
+        const container = document.getElementById('cart-items');
+        
+        if (!items || items.length === 0) {
+            container.innerHTML = '<p>Корзина пуста.</p>';
+            document.getElementById('cart-total').innerHTML = '';
+            document.getElementById('checkout-form').style.display = 'none';
+            return;
         }
 
-        html += `<li class="cart-item" data-index="${index}">
-            <div class="cart-item-image">
-                ${item.thumb ? `<img src="${item.thumb}" alt="${item.title}">` : ''}
-            </div>
-            <div class="cart-item-info">
-                <div class="cart-item-title">${item.title || 'Без названия'}</div>
-                <div class="cart-item-price">${parseFloat(item.price) || 0} руб.</div>
-                ${paramsHtml}
-            </div>
-            <div class="cart-item-actions">
-                <div class="cart-item-quantity">
-                    <button class="qty-minus" data-index="${index}">-</button>
-                    <span>${item.quantity || 1}</span>
-                    <button class="qty-plus" data-index="${index}">+</button>
+        let html = '<ul class="cart-list">';
+        
+        items.forEach(function(item, index) {
+            let paramsHtml = '';
+            if (item.optionsString) {
+                paramsHtml = '<br><small>Параметры: ' + item.optionsString + '</small>';
+            } else if (item.size || item.color) {
+                paramsHtml = '<br><small>Размер: ' + (item.size || '—') + ' | Цвет: ' + (item.color || '—') + '</small>';
+            }
+
+            const imageHtml = item.thumb 
+                ? `<img src="${item.thumb}" alt="${item.title || 'Товар'}">` 
+                : '<div class="no-image">Нет фото</div>';
+
+            html += `<li class="cart-item">
+                <div class="cart-item-image">
+                    ${imageHtml}
                 </div>
-                <button class="remove-item" data-index="${index}">Удалить</button>
-            </div>
-        </li>`;
-    });
+                <div class="cart-item-info">
+                    <div class="cart-item-title">${item.title || 'Без названия'}</div>
+                    <div class="cart-item-price">${parseFloat(item.price) || 0} руб.</div>
+                    ${paramsHtml}
+                </div>
+                <div class="cart-item-actions">
+                    <div class="cart-item-quantity">
+                        <button class="qty-minus" data-index="${index}">-</button>
+                        <span>${item.quantity || 1}</span>
+                        <button class="qty-plus" data-index="${index}">+</button>
+                    </div>
+                    <button class="remove-item" data-index="${index}">Удалить</button>
+                </div>
+            </li>`;
+        });
 
-    html += '</ul>';
-    container.innerHTML = html;
+        html += '</ul>';
+        container.innerHTML = html;
 
-    const total = cart.getTotal();
-    document.getElementById('cart-total').innerHTML = `<p><strong>Итого: ${total} руб.</strong></p>`;
+        const total = cart.getTotal();
+        document.getElementById('cart-total').innerHTML = `<p><strong>Итого: ${total} руб.</strong></p>`;
 
-    // Делегирование событий — один обработчик на весь контейнер
-    container.addEventListener('click', function(e) {
-        const target = e.target;
-        const index = parseInt(target.dataset.index);
+        // Делегирование событий для кнопок в корзине
+        container.onclick = function(e) {
+            const target = e.target;
+            const index = parseInt(target.dataset.index);
 
-        if (isNaN(index)) return;
+            if (isNaN(index)) return;
 
-        if (target.classList.contains('qty-minus')) {
-            cart.updateQuantity(index, -1);
-            renderCart();
-        } 
-        else if (target.classList.contains('qty-plus')) {
-            cart.updateQuantity(index, 1);
-            renderCart();
-        } 
-        else if (target.classList.contains('remove-item')) {
-            cart.remove(index);
-            renderCart();
-        }
-    }, { once: true }); // важно: добавляем только один раз
-}
+            if (target.classList.contains('qty-minus')) {
+                cart.updateQuantity(index, -1);
+                renderCart();
+            } else if (target.classList.contains('qty-plus')) {
+                cart.updateQuantity(index, 1);
+                renderCart();
+            } else if (target.classList.contains('remove-item')) {
+                cart.remove(index);
+                renderCart();
+            }
+        };
+    }
 
     renderCart();
 
-        // === ОБРАБОТКА ОТПРАВКИ ФОРМЫ ===
+    // Отправка заказа
     const orderForm = document.getElementById('order-form');
     if (orderForm) {
         orderForm.addEventListener('submit', function(e) {
@@ -147,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const submitBtn = document.getElementById('submit-order');
             const originalText = submitBtn.textContent;
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Отправляем заказ...';
+            submitBtn.textContent = 'Отправляем...';
 
             fetch('<?php echo admin_url("admin-ajax.php"); ?>', {
                 method: 'POST',
@@ -156,25 +158,16 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Успешная отправка
                     document.getElementById('checkout-form').style.display = 'none';
                     document.getElementById('success-message').style.display = 'block';
-
-                    // УСИЛЕННАЯ ОЧИСТКА + ПЕРЕРЕНДЕР
-                    cart.items = [];
-                    localStorage.removeItem('whieda_cart');
-                    cart.updateCounter();
-
-                    console.log('Корзина полностью очищена после отправки заказа');
-
-                    // Важно: заново отрисовываем корзину
+                    cart.clear();
                     renderCart();
                 } else {
                     alert('Ошибка: ' + (data.data || 'Не удалось отправить заказ'));
                 }
             })
             .catch(error => {
-                console.error('Ошибка отправки:', error);
+                console.error('Ошибка:', error);
                 alert('Произошла ошибка при отправке заказа.');
             })
             .finally(() => {
