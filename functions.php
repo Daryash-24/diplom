@@ -183,7 +183,9 @@ function force_product_search( $query ) {
 }
 add_action( 'pre_get_posts', 'force_product_search' );
 
+// =============================================
 // AJAX обработчик отправки заказа из корзины
+// =============================================
 
 add_action('wp_ajax_send_order', 'handle_send_order');
 add_action('wp_ajax_nopriv_send_order', 'handle_send_order');
@@ -198,7 +200,7 @@ function handle_send_order() {
     $phone    = sanitize_text_field($_POST['customer_phone'] ?? '');
     $email    = sanitize_email($_POST['customer_email'] ?? '');
     $comment  = sanitize_textarea_field($_POST['customer_comment'] ?? '');
-    
+
     $cart_json = $_POST['cart_items'] ?? '[]';
     $cart_items = json_decode(stripslashes($cart_json), true);
 
@@ -213,17 +215,17 @@ function handle_send_order() {
     // Формируем письмо
     $subject = 'Новый заказ с сайта - ' . get_bloginfo('name');
     
-    $message = "<h2>Новый заказ с веб-витрины</h2>";
-    $message .= "<p><strong>Дата:</strong> " . date('d.m.Y H:i') . "</p>";
+    $message = "<h2>Новый заказ с веб-витрины</h2>\n";
+    $message .= "<p><strong>Дата:</strong> " . date('d.m.Y H:i:s') . "</p>\n";
     
-    if ($name)  $message .= "<p><strong>Имя:</strong> " . esc_html($name) . "</p>";
-    if ($phone) $message .= "<p><strong>Телефон:</strong> " . esc_html($phone) . "</p>";
-    if ($email) $message .= "<p><strong>Email:</strong> " . esc_html($email) . "</p>";
-    if ($comment) $message .= "<p><strong>Комментарий:</strong><br>" . nl2br(esc_html($comment)) . "</p>";
-    
-    $message .= "<hr><h3>Состав заказа:</h3>";
-    $message .= "<table border='1' cellpadding='8' cellspacing='0' style='border-collapse: collapse; width: 100%;'>";
-    $message .= "<tr><th>Товар</th><th>Параметры</th><th>Кол-во</th><th>Цена</th><th>Сумма</th></tr>";
+    if ($name)  $message .= "<p><strong>Имя клиента:</strong> " . esc_html($name) . "</p>\n";
+    if ($phone) $message .= "<p><strong>Телефон:</strong> " . esc_html($phone) . "</p>\n";
+    if ($email) $message .= "<p><strong>Email:</strong> " . esc_html($email) . "</p>\n";
+    if ($comment) $message .= "<p><strong>Комментарий:</strong><br>" . nl2br(esc_html($comment)) . "</p>\n";
+
+    $message .= "<hr>\n<h3>Состав заказа:</h3>\n";
+    $message .= "<table border='1' cellpadding='8' cellspacing='0' style='border-collapse: collapse; width: 100%;'>\n";
+    $message .= "<tr><th>Товар</th><th>Параметры</th><th>Кол-во</th><th>Цена за шт.</th><th>Сумма</th></tr>\n";
 
     $total = 0;
     foreach ($cart_items as $item) {
@@ -235,30 +237,30 @@ function handle_send_order() {
         $item_total = ($item['price'] ?? 0) * ($item['quantity'] ?? 1);
         $total += $item_total;
 
-        $message .= "<tr>";
-        $message .= "<td><strong>" . esc_html($item['title'] ?? 'Без названия') . "</strong></td>";
-        $message .= "<td>" . esc_html($options) . "</td>";
-        $message .= "<td style='text-align:center;'>" . ($item['quantity'] ?? 1) . "</td>";
-        $message .= "<td>" . number_format($item['price'] ?? 0, 0, ',', ' ') . " ₽</td>";
-        $message .= "<td>" . number_format($item_total, 0, ',', ' ') . " ₽</td>";
-        $message .= "</tr>";
+        $message .= "<tr>\n";
+        $message .= "<td><strong>" . esc_html($item['title'] ?? 'Без названия') . "</strong></td>\n";
+        $message .= "<td>" . esc_html($options) . "</td>\n";
+        $message .= "<td style='text-align:center;'>" . ($item['quantity'] ?? 1) . "</td>\n";
+        $message .= "<td>" . number_format($item['price'] ?? 0, 0, ',', ' ') . " ₽</td>\n";
+        $message .= "<td>" . number_format($item_total, 0, ',', ' ') . " ₽</td>\n";
+        $message .= "</tr>\n";
     }
-    $message .= "</table>";
-    $message .= "<p><strong>Итого к оплате: " . number_format($total, 0, ',', ' ') . " ₽</strong></p>";
+    $message .= "</table>\n";
+    $message .= "<p><strong>Итого к оплате: " . number_format($total, 0, ',', ' ') . " ₽</strong></p>\n";
 
+    // Адрес получателя — можно менять в одном месте
     $to = 'daryaaleksandrovna.work@gmail.com';
-    $headers = ['Content-Type: text/html; charset=UTF-8'];
 
-    // Пытаемся отправить письмо
+    $headers = array('Content-Type: text/html; charset=UTF-8');
+
     $sent = wp_mail($to, $subject, $message, $headers);
 
     if ($sent) {
         wp_send_json_success('Заказ успешно отправлен');
     } else {
-        // Если не отправилось — возвращаем подробную ошибку
         global $phpmailer;
-        $error_info = $phpmailer ? $phpmailer->ErrorInfo : 'Неизвестная ошибка wp_mail()';
-        wp_send_json_error('Не удалось отправить письмо. Ошибка: ' . $error_info);
+        $error = $phpmailer ? $phpmailer->ErrorInfo : 'Неизвестная ошибка';
+        wp_send_json_error('Не удалось отправить письмо. Ошибка: ' . $error);
     }
 }
 ?>
