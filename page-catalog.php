@@ -65,7 +65,18 @@
                             <?php endif; ?>
                             <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
                             <div class="product-price"><?php echo $price ? $price . ' руб.' : 'Цена не указана'; ?></div>
-                            <button class="buy-button" data-id="<?php the_ID(); ?>" data-title="<?php echo esc_attr(get_the_title()); ?>" data-price="<?php echo esc_attr($price); ?>" data-thumb="<?php echo esc_attr($thumb_url); ?>">Купить</button>
+                            <?php 
+                            $options_text = get_post_meta(get_the_ID(), '_product_options', true);
+                            $has_options = !empty(trim($options_text));
+                            ?>
+                            <button class="buy-button" 
+                                    data-id="<?php the_ID(); ?>" 
+                                    data-title="<?php echo esc_attr(get_the_title()); ?>" 
+                                    data-price="<?php echo esc_attr($price); ?>" 
+                                    data-thumb="<?php echo esc_attr($thumb_url); ?>"
+                                    data-has-options="<?php echo $has_options ? 'true' : 'false'; ?>">
+                                <?php echo $has_options ? 'Выбрать опции' : 'Купить'; ?>
+                            </button>
                         </div>
                     <?php endwhile; ?>
                     <div class="pagination">
@@ -86,37 +97,38 @@
 </div>
 
 <script>
-// Клиентский поиск по названию (без перезагрузки)
+// Поиск по названию
 document.getElementById('catalog-search-button').addEventListener('click', function() {
     var searchTerm = document.getElementById('catalog-search-input').value.toLowerCase();
     var cards = document.querySelectorAll('.product-card');
     cards.forEach(function(card) {
         var title = card.getAttribute('data-title').toLowerCase();
-        if (title.indexOf(searchTerm) !== -1) {
-            card.style.display = '';
-        } else {
-            card.style.display = 'none';
-        }
+        card.style.display = title.indexOf(searchTerm) !== -1 ? '' : 'none';
     });
 });
 
-// Добавление в корзину из каталога
+// Добавление в корзину из каталога + проверка опций
 if (typeof cart !== 'undefined') {
     document.querySelectorAll('.buy-button').forEach(btn => {
         btn.addEventListener('click', function(e) {
-            const id = this.dataset.id;
-            const title = this.dataset.title;
-            const price = parseFloat(this.dataset.price);
-            const thumb = this.dataset.thumb;
+            const hasOptions = this.dataset.hasOptions === 'true';
+
+            if (hasOptions) {
+                alert('У этого товара есть опции (размер, цвет и т.д.).\n\nПерейдите в карточку товара и выберите необходимые опции перед добавлением в корзину.');
+                return;
+            }
+
+            // Добавляем товар без опций
             cart.add({
-                id: id,
-                title: title,
-                price: price,
-                thumb: thumb,
+                id: this.dataset.id,
+                title: this.dataset.title,
+                price: parseFloat(this.dataset.price),
+                thumb: this.dataset.thumb,
                 options: {},
                 optionsString: ''
             });
-            alert('Товар добавлен в корзину');
+
+            alert('Товар добавлен в корзину!');
         });
     });
 }
