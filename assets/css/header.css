@@ -6,7 +6,6 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 15px 20px;
-    background: #658a34;
 }
 
 .main-nav {
@@ -45,7 +44,7 @@
         gap: 15px;
     }
     .menu a {
-        font-size: 16px;
+        font-size: 18px;
         padding: 6px 10px;
     }
 }

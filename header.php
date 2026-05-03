@@ -10,20 +10,20 @@
 
 <body <?php body_class(); ?>>
     <header>
-            
-        <nav>
-            <?php
-            wp_nav_menu( array(
-                'theme_location' => 'primary',
-                'container'      => false,   // чтобы не оборачивал в дополнительный div
-                'menu_class'     => 'menu',  // класс для ul (можно переименовать)
-            ) );
-            ?>
-        </nav>
+        <div class="header-container">
+            <nav class='main-nav'>
+                <?php
+                wp_nav_menu( array(
+                    'theme_location' => 'primary',
+                    'container'      => false,   // чтобы не оборачивал в дополнительный div
+                    'menu_class'     => 'menu',  // класс для ul
+                ) );
+                ?>
+            </nav>
 
-        <a href="/cart/" class="cart-link">
-            🛒 <span class="cart-counter" style="display:none;">0</span>
-        </a>
-
+            <a href="/cart/" class="cart-link">
+                🛒 <span class="cart-counter" style="display:none;">0</span>
+            </a>
+        </div>
     </header>
     <main>
