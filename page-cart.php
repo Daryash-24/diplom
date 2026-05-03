@@ -10,41 +10,38 @@
     <!-- Форма быстрого заказа -->
     <div id="checkout-form" class="checkout-form">
         <h2>Оформить заказ</h2>
-        <p>Заполните данные, и менеджер свяжется с вами для подтверждения заказа.</p>
+        <p class="form-subtitle">Менеджер свяжется с вами для подтверждения заказа в ближайшее время</p>
         
         <form id="order-form">
-            <?php wp_nonce_field('send_order_nonce', 'security'); // ← Добавили защиту ?>
+            <?php wp_nonce_field('send_order_nonce', 'security'); ?>
 
             <div class="form-group">
                 <label for="customer_name">Имя (необязательно)</label>
                 <input type="text" id="customer_name" name="customer_name" placeholder="Ваше имя">
             </div>
-            
-            <div class="form-group">
-                <label for="customer_phone">Телефон <span class="required">*</span></label>
-                <input type="tel" id="customer_phone" name="customer_phone" placeholder="+7 (___) ___-__-__">
-            </div>
-            
+
             <div class="form-group">
                 <label for="customer_email">Email <span class="required">*</span></label>
-                <input type="email" id="customer_email" name="customer_email" placeholder="your@email.com">
+                <input type="email" id="customer_email" name="customer_email" placeholder="your@email.com" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="customer_comment">Комментарий к заказу (необязательно)</label>
                 <textarea id="customer_comment" name="customer_comment" rows="3" placeholder="Укажите удобное время для звонка или дополнительные пожелания"></textarea>
             </div>
-            
-            <button type="submit" id="submit-order" class="submit-order-btn">Отправить заказ менеджеру</button>
+
+            <button type="submit" id="submit-order" class="submit-order-btn">
+                Отправить заказ менеджеру
+            </button>
         </form>
     </div>
 
-    <!-- Сообщение об успехе -->
-    <div id="success-message" class="success-message" style="display: none;">
-        <h2>Ваш заказ в обработке</h2>
-        <p>Менеджер свяжется с вами в ближайшее время для подтверждения деталей заказа.</p>
-        <a href="/catalog" class="btn-back">Вернуться в каталог</button>
-    </div>
+<!-- Сообщение об успехе -->
+<div id="success-message" class="success-message" style="display: none;">
+    <div class="success-icon">✓</div>
+    <h2>Заказ принят в обработку</h2>
+    <p>Менеджер свяжется с вами в ближайшее время для подтверждения деталей и оплаты.</p>
+    <a href="/catalog" class="btn-back">Вернуться в каталог</a>
 </div>
 
 <script>
@@ -134,11 +131,10 @@ document.addEventListener('DOMContentLoaded', function() {
         orderForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const phone = document.getElementById('customer_phone').value.trim();
             const email = document.getElementById('customer_email').value.trim();
 
-            if (!phone && !email) {
-                alert('Пожалуйста, укажите телефон или email для связи');
+            if (!email) {
+                alert('Пожалуйста, укажите email для связи');
                 return;
             }
 
