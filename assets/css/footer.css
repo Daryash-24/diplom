@@ -84,16 +84,28 @@ main {
     color: #aaa;
 }
 
-/* Адаптивность для футера */
+/* Адаптивка */
 @media (max-width: 768px) {
     .footer-container {
-        flex-direction: column;
+        flex-direction: column;      /* блоки идут вертикально */
+        align-items: center;         /* центрируем каждый блок по горизонтали */
+        justify-content: center;     /* центрируем по вертикали */
         text-align: center;
+        gap: 30px;
     }
+
+    .footer-info,
+    .footer-copyright {
+        text-align: center;          /* текст внутри тоже по центру */
+    }
+
+    .footer-social {
+        display: flex;
+        justify-content: center;     /* сами кнопки по центру */
+        width: 100%;                 
+    }
+
     .footer-copyright {
         text-align: center;
-    }
-    .footer-social {
-        justify-content: center;
     }
 }
