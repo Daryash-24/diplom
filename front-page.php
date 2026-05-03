@@ -69,11 +69,11 @@
         </div>
     </section>
 
-    <!-- Ссылка на Telegram / соцсети -->
+    <!-- Ссылка на соцсети -->
     <section class="social">
         <h2>Будьте в курсе</h2>
-        <p>Подписывайтесь на наш Telegram-канал, чтобы узнавать об акциях и новинках</p>
-        <a href="https://" class="btn-secondary" target="_blank" rel="noopener noreferrer">Перейти в Telegram</a>
+        <p>Подписывайтесь на наш ВК-канал, чтобы узнавать об акциях и новинках</p>
+        <a href="https://" class="btn-secondary" target="_blank" rel="noopener noreferrer">Перейти в Вконтакте</a>
     </section>
 </div>
 
