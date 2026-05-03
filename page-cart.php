@@ -1,8 +1,8 @@
 <?php /* Template Name: Корзина */ ?>
 <?php get_header(); ?>
 
-<div class="cart-page">
-    <h1>Корзина</h1>
+    <div class="cart-page">
+    <h1 id="cart-title">Корзина</h1>
     
     <div id="cart-items"></div>
     <div id="cart-total"></div>
@@ -36,12 +36,13 @@
         </form>
     </div>
 
-<!-- Сообщение об успехе -->
-<div id="success-message" class="success-message" style="display: none;">
-    <div class="success-icon">✓</div>
-    <h2>Заказ принят в обработку</h2>
-    <p>Менеджер свяжется с вами в ближайшее время для подтверждения деталей и оплаты.</p>
-    <a href="/catalog" class="btn-back">Вернуться в каталог</a>
+    <!-- Сообщение об успехе -->
+    <div id="success-message" class="success-message" style="display: none;">
+        <div class="success-icon">✓</div>
+        <h2>Заказ принят в обработку</h2>
+        <p>Менеджер свяжется с вами в ближайшее время для подтверждения деталей заказа.</p>
+        <a href="/catalog" class="btn-back">Вернуться в каталог</a>
+    </div>
 </div>
 
 <script>
@@ -156,9 +157,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     document.getElementById('checkout-form').style.display = 'none';
                     document.getElementById('success-message').style.display = 'block';
+                    
+                    // Скрываем заголовок и содержимое корзины
+                    document.getElementById('cart-title').style.display = 'none';
+                    document.getElementById('cart-items').style.display = 'none';
+                    document.getElementById('cart-total').style.display = 'none';
+
                     cart.clear();
-                    renderCart();
-                } else {
+                    renderCart(); 
+                }
+                else {
                     alert('Ошибка: ' + (data.data || 'Не удалось отправить заказ'));
                 }
             })
