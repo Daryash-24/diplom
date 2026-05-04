@@ -16,7 +16,8 @@
                 wp_nav_menu( array(
                     'theme_location' => 'primary',
                     'container'      => false,   // чтобы не оборачивал в дополнительный div
-                    'menu_class'     => 'menu',  // класс для ul
+                    'menu_class'     => 'menu',
+                    'fallback_cb'    => false,
                 ) );
                 ?>
             </nav>

@@ -30,6 +30,15 @@
                 <textarea id="customer_comment" name="customer_comment" rows="3" placeholder="Укажите удобное время для звонка или дополнительные пожелания"></textarea>
             </div>
 
+            <!-- Чекбокс согласия -->
+            <div class="form-group consent-group">
+                <label>
+                    <input type="checkbox" id="consent" name="consent" required>
+                    Я согласен/а на обработку моих персональных данных в соответствии с 
+                    <a href="/privacy-policy" target="_blank">Политикой конфиденциальности</a>
+                </label>
+            </div>
+
             <button type="submit" id="submit-order" class="submit-order-btn">
                 Отправить заказ менеджеру
             </button>
@@ -133,9 +142,15 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
 
             const email = document.getElementById('customer_email').value.trim();
+            const consent = document.getElementById('consent').checked;
 
             if (!email) {
                 alert('Пожалуйста, укажите email для связи');
+                return;
+            }
+
+            if (!consent) {
+                alert('Необходимо дать согласие на обработку персональных данных');
                 return;
             }
 
@@ -158,15 +173,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('checkout-form').style.display = 'none';
                     document.getElementById('success-message').style.display = 'block';
                     
-                    // Скрываем заголовок и содержимое корзины
                     document.getElementById('cart-title').style.display = 'none';
                     document.getElementById('cart-items').style.display = 'none';
                     document.getElementById('cart-total').style.display = 'none';
 
                     cart.clear();
-                    renderCart(); 
-                }
-                else {
+                    renderCart();
+                } else {
                     alert('Ошибка: ' + (data.data || 'Не удалось отправить заказ'));
                 }
             })

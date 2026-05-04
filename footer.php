@@ -16,7 +16,10 @@
             </div>
 
             <div class="footer-copyright">
-                &copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. Все права защищены.
+                <p>
+                    © <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. Все права защищены.<br>
+                    <a href="/privacy-policy" target="_blank">Политика конфиденциальности</a>
+                </p>
             </div>
         </div>
     </footer>

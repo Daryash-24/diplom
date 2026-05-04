@@ -1,4 +1,4 @@
-/* хэдер */
+/* главное меню */
 .header-container {
     display: flex;
     align-items: center;
@@ -14,37 +14,48 @@
 }
 
 /* Основное меню */
-.menu ul {
-    list-style: none;
+.main-nav .menu,
+.main-nav ul.menu {
+    list-style: none !important;   
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
-    gap: 25px;
+    gap: 28px;
     flex-wrap: wrap;
 }
 
-.menu li {
+.main-nav .menu li,
+.main-nav ul.menu li {
     margin: 0;
     padding: 0;
 }
 
-.menu a {
+.main-nav .menu a,
+.main-nav ul.menu a {
     text-decoration: none;
     color: #ffffff;
     font-weight: bold;
     font-size: 25px;
-    padding: 8px 12px;
+    padding: 8px 14px;
     transition: color 0.3s ease;
+    white-space: nowrap;
 }
 
-/* Адаптивное меню */
+.main-nav .menu a:hover,
+.main-nav ul.menu a:hover {
+    color: #ffeb3b;
+}
+
+/* адаптивка */
 @media (max-width: 768px) {
-    .menu ul {
-        gap: 15px;
+    .main-nav .menu,
+    .main-nav ul.menu {
+        gap: 16px;
     }
-    .menu a {
-        font-size: 18px;
+    .main-nav .menu a,
+    .main-nav ul.menu a {
+        font-size: 20px;
         padding: 6px 10px;
     }
 }
@@ -53,11 +64,13 @@
     .header-container {
         padding: 12px 15px;
     }
-    .menu ul {
-        gap: 8px;
+    .main-nav .menu,
+    .main-nav ul.menu {
+        gap: 10px;
     }
-    .menu a {
-        font-size: 14px;
+    .main-nav .menu a,
+    .main-nav ul.menu a {
+        font-size: 15px;
         padding: 5px 8px;
     }
 }
