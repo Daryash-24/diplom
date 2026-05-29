@@ -1,5 +1,11 @@
 <?php get_header(); ?>
 
+<div class="back-to-catalog">
+    <a href="<?php echo esc_url( get_permalink( get_page_by_path('catalog') ) ); ?>" class="back-button">
+        ← Назад в каталог
+    </a>
+</div>
+
 <div class="sp-product">
     <?php while ( have_posts() ) : the_post(); ?>
         <div class="sp-main">

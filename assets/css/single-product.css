@@ -144,3 +144,26 @@
 .tab-pane.active {
     display: block;
 }
+
+/* Кнопка "Назад в каталог" */
+.back-to-catalog {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 20px 0 20px; /* отступ сверху и слева */
+    box-sizing: border-box;
+}
+.back-button {
+    display: inline-block;
+    background-color: #e78cbbc7;   /* розовый, как кнопка "В корзину" */
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 40px;         /* скруглённая кнопка */
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.1s;
+}
+.back-button:hover {
+    background-color: #e93692;   /* тёмнее при наведении */
+    transform: scale(1.02);
+}

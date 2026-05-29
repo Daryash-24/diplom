@@ -21,11 +21,17 @@
                 ) );
                 if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) {
                     echo '<ul class="category-list-vertical">';
+                    // Получаем текущий ID категории из URL (если есть)
+                    $current_cat_id = isset( $_GET['cat_id'] ) ? intval( $_GET['cat_id'] ) : 0;
                     foreach ( $categories as $cat ) {
-                        $active = ( isset( $_GET['cat'] ) && $_GET['cat'] == $cat->slug ) ? 'class="active"' : '';
-                        echo '<li ' . $active . '><a href="' . esc_url( add_query_arg( 'cat', $cat->slug, get_permalink() ) ) . '">' . $cat->name . '</a></li>';
+                        $active_class = ( $current_cat_id === $cat->term_id ) ? 'active' : '';
+                        // Передаём в URL параметр cat_id = числовой ID категории
+                        $url = add_query_arg( 'cat_id', $cat->term_id, get_permalink() );
+                        echo '<li><a href="' . esc_url( $url ) . '" class="' . $active_class . '">' . esc_html( $cat->name ) . '</a></li>';
                     }
-                    echo '<li ' . ( ! isset( $_GET['cat'] ) ? 'class="active"' : '' ) . '><a href="' . esc_url( get_permalink() ) . '">Все товары</a></li>';
+                    // Ссылка "Все товары" (без параметра cat_id)
+                    $all_active_class = ( $current_cat_id === 0 ) ? 'active' : '';
+                    echo '<li><a href="' . esc_url( get_permalink() ) . '" class="' . $all_active_class . '">Все товары</a></li>';
                     echo '</ul>';
                 } else {
                     echo '<p>Категории не созданы.</p>';
@@ -42,12 +48,12 @@
                     'posts_per_page' => 6,
                     'paged'          => $paged,
                 );
-                if ( isset( $_GET['cat'] ) && ! empty( $_GET['cat'] ) ) {
+                if ( isset( $_GET['cat_id'] ) && ! empty( $_GET['cat_id'] ) ) {
                     $args['tax_query'] = array(
                         array(
                             'taxonomy' => 'product_category',
-                            'field'    => 'slug',
-                            'terms'    => sanitize_text_field( $_GET['cat'] ),
+                            'field'    => 'term_id',
+                            'terms'    => intval( $_GET['cat_id'] ),
                         ),
                     );
                 }
