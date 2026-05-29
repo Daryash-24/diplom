@@ -4,7 +4,7 @@
 <section class="hero-full">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-        <h1>WHIEDA — здоровье и процветание</h1>
+        <h1>LIEDA — здоровье и процветание</h1>
         <p>Традиционная китайская медицина в современных продуктах</p>
         <a href="/catalog" class="btn-primary">Перейти в каталог</a>
     </div>
@@ -63,7 +63,7 @@
 <!-- Преимущества (обновлённые) -->
 <section class="advantages">
     <div class="container">
-        <h2>Почему выбирают WHIEDA</h2>
+        <h2>Почему выбирают LIEDA</h2>
         <div class="advantages-grid">
             <div class="advantage-item">
                 <h3>Научный подход</h3>
@@ -91,7 +91,7 @@
         <h2>Отзывы наших клиентов</h2>
         <div class="reviews-grid">
             <div class="review-card">
-                <p>“Принимаю БАДы WHIEDA уже полгода – улучшилось самочувствие, прошла усталость. Рекомендую!”</p>
+                <p>“Принимаю БАДы LIEDA уже полгода – улучшилось самочувствие, прошла усталость. Рекомендую!”</p>
                 <cite>— Елена, Москва</cite>
             </div>
             <div class="review-card">
@@ -116,5 +116,40 @@
         </div>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof cart !== 'undefined') {
+        // Находим все кнопки .buy-button на странице (включая хиты)
+        const buyButtons = document.querySelectorAll('.buy-button');
+        buyButtons.forEach(btn => {
+            // Убираем старый обработчик, если был (чтобы не дублировать)
+            btn.removeEventListener('click', window.buyHandler);
+            // Создаём обработчик
+            const handler = function(e) {
+                const hasOptions = this.dataset.hasOptions === 'true';
+                if (hasOptions) {
+                    alert('У этого товара есть опции (размер, цвет и т.д.).\n\nПерейдите в карточку товара и выберите необходимые опции перед добавлением в корзину.');
+                    return;
+                }
+                cart.add({
+                    id: this.dataset.id,
+                    title: this.dataset.title,
+                    price: parseFloat(this.dataset.price),
+                    thumb: this.dataset.thumb,
+                    options: {},
+                    optionsString: ''
+                });
+                alert('Товар добавлен в корзину!');
+            };
+            btn.addEventListener('click', handler);
+            // Сохраняем обработчик для возможности удаления (необязательно)
+            btn._buyHandler = handler;
+        });
+    } else {
+        console.error('cart.js не загружен');
+    }
+});
+</script>
 
 <?php get_footer(); ?>
