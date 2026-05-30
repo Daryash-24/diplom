@@ -21,11 +21,14 @@
                 ) );
                 if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) {
                     echo '<ul class="category-list-vertical">';
+                    $current_cat_id = isset( $_GET['cat_id'] ) ? intval( $_GET['cat_id'] ) : 0;
                     foreach ( $categories as $cat ) {
-                        $active = ( isset( $_GET['cat'] ) && $_GET['cat'] == $cat->slug ) ? 'class="active"' : '';
-                        echo '<li ' . $active . '><a href="' . esc_url( add_query_arg( 'cat', $cat->slug, get_permalink() ) ) . '">' . $cat->name . '</a></li>';
+                        $active = ( $current_cat_id === $cat->term_id ) ? 'active' : '';
+                        echo '<li class="' . $active . '"><a href="' . esc_url( add_query_arg( 'cat_id', $cat->term_id, get_permalink() ) ) . '">' . esc_html( $cat->name ) . '</a></li>';
                     }
-                    echo '<li ' . ( ! isset( $_GET['cat'] ) ? 'class="active"' : '' ) . '><a href="' . esc_url( get_permalink() ) . '">Все товары</a></li>';
+                    // Ссылка "Все товары"
+                    $all_active = ( $current_cat_id === 0 ) ? 'active' : '';
+                    echo '<li class="' . $all_active . '"><a href="' . esc_url( get_permalink() ) . '">Все товары</a></li>';
                     echo '</ul>';
                 } else {
                     echo '<p>Категории не созданы.</p>';
@@ -41,12 +44,12 @@
                     'post_type'      => 'product',
                     'posts_per_page' => -1,
                 );
-                if ( isset( $_GET['cat'] ) && ! empty( $_GET['cat'] ) ) {
+                if ( isset( $_GET['cat_id'] ) && ! empty( $_GET['cat_id'] ) ) {
                     $args['tax_query'] = array(
                         array(
                             'taxonomy' => 'product_category',
-                            'field'    => 'slug',
-                            'terms'    => sanitize_text_field( $_GET['cat'] ),
+                            'field'    => 'term_id',
+                            'terms'    => intval( $_GET['cat_id'] ),
                         ),
                     );
                 }

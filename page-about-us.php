@@ -62,7 +62,7 @@ get_header();
     <section class="about-contacts">
         <div class="container">
             <h2>Контакты</h2>
-            <p>Email: <a href="mailto:info@whieda.com">info@whieda.com</a></p>
+            <p>Email: <a href="mailto:info@whieda.com">example@gmail.com</a></p>
             <p>Телефон: <a href="tel:+71234567890">+7 (123) 456-78-90</a></p>
             <p>Адрес: г. Новосибирск, ул. Примерная, д. 1</p>
         </div>
