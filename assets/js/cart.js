@@ -7,7 +7,21 @@ class Cart {
 
     load() {
         const stored = localStorage.getItem('whieda_cart');
-        return stored ? JSON.parse(stored) : [];
+        let items = stored ? JSON.parse(stored) : [];
+        // Для старых товаров (без optionsKey) добавляем ключ на основе старых полей
+        items = items.map(item => {
+            if (!item.optionsKey) {
+                if (item.options && Object.keys(item.options).length > 0) {
+                    item.optionsKey = JSON.stringify(item.options);
+                } else if (item.size || item.color) {
+                    item.optionsKey = (item.size || '') + '|' + (item.color || '');
+                } else {
+                    item.optionsKey = '';
+                }
+            }
+            return item;
+        });
+        return items;
     }
 
     save() {
@@ -16,20 +30,32 @@ class Cart {
     }
 
     add(item) {
-        const existingIndex = this.items.findIndex(i =>
-            i.id === item.id && 
-            i.size === item.size && 
-            i.color === item.color
-        );
-
-        if (existingIndex !== -1) {
-            this.items[existingIndex].quantity += 1;
+    // Убедимся, что у item есть ключ optionsKey – строка, уникальная для комбинации опций
+    if (!item.optionsKey) {
+        // Если передан объект options, создаём ключ
+        if (item.options && Object.keys(item.options).length > 0) {
+            item.optionsKey = JSON.stringify(item.options);
+        } else if (item.size || item.color) {
+            // Старый способ (size/color)
+            item.optionsKey = (item.size || '') + '|' + (item.color || '');
         } else {
-            item.quantity = 1;
-            this.items.push(item);
+            item.optionsKey = '';
         }
-        this.save();
     }
+
+    // Ищем товар с таким же id и такими же опциями
+    const existingIndex = this.items.findIndex(i =>
+        i.id === item.id && i.optionsKey === item.optionsKey
+    );
+
+    if (existingIndex !== -1) {
+        this.items[existingIndex].quantity += 1;
+    } else {
+        item.quantity = 1;
+        this.items.push(item);
+    }
+    this.save();
+}
 
     remove(index) {
         this.items.splice(index, 1);

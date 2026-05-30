@@ -130,13 +130,16 @@ document.addEventListener('DOMContentLoaded', function() {
             optionsString = Object.entries(options).map(([k, v]) => `${k}: ${v}`).join(', ');
         }
 
+        const optionsKey = JSON.stringify(options); // options – объект выбранных опций
+
         cart.add({
             id: productId,
             title: productTitle,
             price: productPrice,
             options: options,
             optionsString: optionsString,
-            thumb: productThumb
+            thumb: productThumb,
+            optionsKey: optionsKey   // <-- добавляем
         });
 
         showNotification('Товар добавлен в корзину!');
