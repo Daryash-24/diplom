@@ -168,21 +168,6 @@ function save_product_options_meta($post_id) {
 }
 add_action('save_post_product', 'save_product_options_meta');
 
-// Отключаем канонический редирект для страницы каталога (по ID)
-add_filter( 'redirect_canonical', function( $redirect, $requested_url ) {
-    if ( is_page( 'catalog' ) ) { 
-        return false;
-    }
-    return $redirect;
-}, 10, 2 );
-
-function force_product_search( $query ) {
-    if ( ! is_admin() && $query->is_main_query() && is_page( 'catalog' ) && isset( $_GET['s'] ) ) {
-        $query->set( 'post_type', 'product' );
-    }
-}
-add_action( 'pre_get_posts', 'force_product_search' );
-
 // =============================================
 // AJAX обработчик отправки заказа из корзины
 // =============================================
@@ -263,4 +248,21 @@ function handle_send_order() {
         wp_send_json_error('Не удалось отправить письмо. Ошибка: ' . $error);
     }
 }
+
+// Принудительное использование шаблона страницы каталога при поиске
+add_action('parse_query', function($query) {
+    if ( ! is_admin() && $query->is_main_query() && isset($_GET['s']) && isset($_GET['post_type']) && $_GET['post_type'] === 'product' ) {
+        $catalog_page = get_page_by_path('catalog');
+        if ($catalog_page) {
+            $query->set('page_id', $catalog_page->ID);
+            $query->is_page = true;
+            $query->is_singular = false;
+            $query->is_archive = false;
+            $query->is_search = false; // отключаем стандартный поисковый шаблон
+            $query->set('s', sanitize_text_field($_GET['s']));
+            $query->set('post_type', 'product');
+        }
+    }
+});
+
 ?>
