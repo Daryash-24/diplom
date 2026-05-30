@@ -1306,3 +1306,58 @@ footer {
         font-size: 14px;
     }
 }
+
+/* Стили для страницы "Политика конфиденциальности" (ID 59) */
+body.page-id-59 article {
+    max-width: 920px;
+    margin: 40px auto;
+    padding: 40px 30px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+body.page-id-59 h1 {
+    font-size: 36px;
+    text-align: center;
+    color: #658a34;
+    margin-bottom: 40px;
+}
+
+body.page-id-59 h2 {
+    font-size: 26px;
+    margin-top: 40px;
+    margin-bottom: 15px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #eaeaea;
+    color: #2c2c2c;
+}
+
+body.page-id-59 p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 1.2em;
+}
+
+body.page-id-59 ul,
+body.page-id-59 ol {
+    margin: 15px 0 20px 30px;
+}
+
+body.page-id-59 li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    body.page-id-59 article {
+        padding: 30px 20px;
+        margin: 20px;
+    }
+    body.page-id-59 h1 {
+        font-size: 28px;
+    }
+    body.page-id-59 h2 {
+        font-size: 22px;
+    }
+}
