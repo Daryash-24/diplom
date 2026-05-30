@@ -34,7 +34,7 @@
             <div class="form-group consent-group">
                 <label class="consent-label">
                     <input type="checkbox" id="consent" name="consent" required>
-                    <span>Я согласен на обработку моих персональных данных в соответствии с 
+                    <span>Я согласен/а на обработку моих персональных данных в соответствии с 
                         <a href="/privacy-policy" target="_blank">Политикой конфиденциальности</a>
                     </span>
                 </label>
