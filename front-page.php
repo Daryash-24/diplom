@@ -48,7 +48,7 @@
     </div>
 </section>
 
-<!-- Индивидуальный заказ (как "Букет по вашим пожеланиям") -->
+<!-- Индивидуальный заказ-->
 <section class="custom-order">
     <div class="container">
         <div class="custom-order-content">
@@ -118,6 +118,44 @@
 </section>
 
 <script>
+// Функция показа уведомления
+function showNotification(message, type = 'success') {
+    var container = document.getElementById('notification-toast');
+    if (!container) {
+        // Если контейнера нет, создаём его
+        var newContainer = document.createElement('div');
+        newContainer.id = 'notification-toast';
+        newContainer.className = 'notification-toast';
+        document.body.appendChild(newContainer);
+        container = newContainer;
+    }
+
+    var toast = document.createElement('div');
+    toast.className = 'toast-message';
+    toast.textContent = message;
+
+    if (type === 'error') {
+        toast.style.borderLeftColor = '#e3348e';
+    } else {
+        toast.style.borderLeftColor = '#658a34';
+    }
+
+    container.appendChild(toast);
+
+    setTimeout(function() {
+        toast.classList.add('show');
+    }, 10);
+
+    setTimeout(function() {
+        toast.classList.remove('show');
+        setTimeout(function() {
+            toast.remove();
+        }, 300);
+    }, 2000);
+}
+</script>
+
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof cart !== 'undefined') {
         // Находим все кнопки .buy-button на странице (включая хиты)
@@ -129,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const handler = function(e) {
                 const hasOptions = this.dataset.hasOptions === 'true';
                 if (hasOptions) {
-                    alert('У этого товара есть опции (размер, цвет и т.д.).\n\nПерейдите в карточку товара и выберите необходимые опции перед добавлением в корзину.');
+                    showNotification('У этого товара есть опции (размер, цвет и т.д.).\n\nПерейдите в карточку товара и выберите необходимые опции перед добавлением в корзину.');
                     return;
                 }
                 cart.add({
@@ -140,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     options: {},
                     optionsString: ''
                 });
-                alert('Товар добавлен в корзину!');
+                showNotification('Товар добавлен в корзину!');
             };
             btn.addEventListener('click', handler);
             // Сохраняем обработчик для возможности удаления (необязательно)

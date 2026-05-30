@@ -24,6 +24,9 @@
         </div>
     </footer>
 
+        <!-- Контейнер для всплывающих уведомлений -->
+    <div id="notification-toast" class="notification-toast"></div>
+    
     <?php wp_footer(); ?>
 </body>
 </html>

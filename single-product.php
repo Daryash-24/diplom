@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
     addButton.addEventListener('click', function() {
         // Если есть опции и они не выбраны — показываем предупреждение
         if (!areAllOptionsSelected()) {
-            alert('Пожалуйста, выберите все необходимые опции товара (размер, цвет и т.д.)');
+            showNotification('Пожалуйста, выберите все необходимые опции товара (размер, цвет и т.д.)');
             return;
         }
 
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
             thumb: productThumb
         });
 
-        alert('Товар добавлен в корзину!');
+        showNotification('Товар добавлен в корзину!');
     });
 
 });

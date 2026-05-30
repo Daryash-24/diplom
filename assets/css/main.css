@@ -1176,3 +1176,51 @@ footer {
         gap: 15px;
     }
 }
+
+/* ===== УВЕДОМЛЕНИЯ (TOAST) ===== */
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none; /* чтобы уведомления не мешали кликам */
+}
+.toast-message {
+    background: #2c2c2c;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(4px);
+    background: rgba(44, 44, 44, 0.9);
+    border-left: 4px solid #e3348e;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+}
+.toast-message.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+/* Адаптив для мобильных */
+@media (max-width: 576px) {
+    .notification-toast {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+    }
+    .toast-message {
+        white-space: normal;
+        font-size: 13px;
+        padding: 10px 16px;
+        text-align: center;
+        width: auto;
+    }
+}

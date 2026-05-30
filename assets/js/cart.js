@@ -73,4 +73,33 @@ class Cart {
     }
 }
 
+// Функция показа уведомления (глобальная)
+window.showNotification = function(message, type = 'success') {
+    const container = document.getElementById('notification-toast');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-message';
+    toast.textContent = message;
+
+    if (type === 'error') {
+        toast.style.borderLeftColor = '#e3348e';
+    } else {
+        toast.style.borderLeftColor = '#658a34';
+    }
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 10);
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }, 2000);
+};
+
 const cart = new Cart();
