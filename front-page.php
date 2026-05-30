@@ -122,7 +122,6 @@
 function showNotification(message, type = 'success') {
     var container = document.getElementById('notification-toast');
     if (!container) {
-        // Если контейнера нет, создаём его
         var newContainer = document.createElement('div');
         newContainer.id = 'notification-toast';
         newContainer.className = 'notification-toast';
@@ -153,23 +152,13 @@ function showNotification(message, type = 'success') {
         }, 300);
     }, 2000);
 }
-</script>
 
-<script>
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof cart !== 'undefined') {
-        // Находим все кнопки .buy-button на странице (включая хиты)
-        const buyButtons = document.querySelectorAll('.buy-button');
-        buyButtons.forEach(btn => {
-            // Убираем старый обработчик, если был (чтобы не дублировать)
-            btn.removeEventListener('click', window.buyHandler);
-            // Создаём обработчик
-            const handler = function(e) {
-                const hasOptions = this.dataset.hasOptions === 'true';
-                if (hasOptions) {
-                    showNotification('У этого товара есть опции (размер, цвет и т.д.).\n\nПерейдите в карточку товара и выберите необходимые опции перед добавлением в корзину.');
-                    return;
-                }
+        document.querySelectorAll('.buy-button').forEach(function(btn) {
+            // Пропускаем ссылки (товары с опциями) – у ссылок нет dataset
+            if (btn.tagName === 'A') return;
+            btn.addEventListener('click', function(e) {
                 cart.add({
                     id: this.dataset.id,
                     title: this.dataset.title,
@@ -179,10 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     optionsString: ''
                 });
                 showNotification('Товар добавлен в корзину!');
-            };
-            btn.addEventListener('click', handler);
-            // Сохраняем обработчик для возможности удаления (необязательно)
-            btn._buyHandler = handler;
+            });
         });
     } else {
         console.error('cart.js не загружен');

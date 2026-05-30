@@ -75,14 +75,16 @@
                             $options_text = get_post_meta(get_the_ID(), '_product_options', true);
                             $has_options = !empty(trim($options_text));
                             ?>
-                            <button class="buy-button" 
+                            <?php if ( $has_options ) : ?>
+                                <a href="<?php the_permalink(); ?>" class="buy-button choose-options-btn">Выбрать опции</a>
+                            <?php else : ?>
+                                <button class="buy-button" 
                                     data-id="<?php the_ID(); ?>" 
                                     data-title="<?php echo esc_attr(get_the_title()); ?>" 
                                     data-price="<?php echo esc_attr($price); ?>" 
                                     data-thumb="<?php echo esc_attr($thumb_url); ?>"
-                                    data-has-options="<?php echo $has_options ? 'true' : 'false'; ?>">
-                                <?php echo $has_options ? 'Выбрать опции' : 'Купить'; ?>
-                            </button>
+                                    data-has-options="false">Купить</button>
+                            <?php endif; ?>
                         </div>
                     <?php endwhile; ?>
                     <div class="pagination">
@@ -116,15 +118,11 @@ document.getElementById('catalog-search-button').addEventListener('click', funct
 // Добавление в корзину из каталога + проверка опций
 if (typeof cart !== 'undefined') {
     document.querySelectorAll('.buy-button').forEach(btn => {
+        // Если это ссылка (тег A), то не добавляем обработчик
+        if (btn.tagName === 'A') return;
+
         btn.addEventListener('click', function(e) {
-            const hasOptions = this.dataset.hasOptions === 'true';
-
-            if (hasOptions) {
-                showNotification('У этого товара есть опции (размер, цвет и т.д.).\n\nПерейдите в карточку товара и выберите необходимые опции перед добавлением в корзину.');
-                return;
-            }
-
-            // Добавляем товар без опций
+            // Только для кнопок без опций (уже отфильтрованы)
             cart.add({
                 id: this.dataset.id,
                 title: this.dataset.title,
@@ -133,7 +131,6 @@ if (typeof cart !== 'undefined') {
                 options: {},
                 optionsString: ''
             });
-
             showNotification('Товар добавлен в корзину!');
         });
     });

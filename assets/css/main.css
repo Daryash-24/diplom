@@ -390,7 +390,8 @@ footer {
 }
 
 .buy-button {
-    background-color: #e3348e;   /* розовый фон */
+    display: inline-block; 
+    background-color: #e3348e;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -399,15 +400,15 @@ footer {
     border-radius: 40px;
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.2s ease;
-    display: inline-block;
-    width: auto;
-    min-width: 120px;
     text-align: center;
+    text-decoration: none;
+    min-width: 120px;
     margin-top: 10px;
 }
 .buy-button:hover {
-    transform: scale(1.1);      /* лёгкое увеличение */
-    background-color: #e3348e;   /* цвет не меняется */
+    transform: scale(1.02);
+    background-color: #e3348e;
+    color: #fff;
 }
 
 
