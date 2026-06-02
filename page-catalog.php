@@ -119,7 +119,7 @@ document.getElementById('catalog-search-button').addEventListener('click', funct
     }
 });
 
-// Добавление в корзину (код уже есть, но оставим)
+// Добавление в корзину 
 if (typeof cart !== 'undefined') {
     document.querySelectorAll('.buy-button').forEach(btn => {
         if (btn.tagName === 'A') return;

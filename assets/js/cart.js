@@ -8,7 +8,6 @@ class Cart {
     load() {
         const stored = localStorage.getItem('whieda_cart');
         let items = stored ? JSON.parse(stored) : [];
-        // Для старых товаров (без optionsKey) добавляем ключ на основе старых полей
         items = items.map(item => {
             if (!item.optionsKey) {
                 if (item.options && Object.keys(item.options).length > 0) {
@@ -30,7 +29,6 @@ class Cart {
     }
 
     add(item) {
-    // Убедимся, что у item есть ключ optionsKey – строка, уникальная для комбинации опций
     if (!item.optionsKey) {
         // Если передан объект options, создаём ключ
         if (item.options && Object.keys(item.options).length > 0) {
